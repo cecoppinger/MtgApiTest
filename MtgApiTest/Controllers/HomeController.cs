@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MtgApiTest.Models;
+using MtgApiManager.Lib.Service;
 
 namespace MtgApiTest.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(string cardName)
         {
+            if (cardName != null)
+            {
+                CardService service = new CardService();
+                var result = service.Where(x => x.Name, cardName).All();
+                var value = result.Value;
+                ViewBag.results = value;
+            }
+
             return View();
         }
 
